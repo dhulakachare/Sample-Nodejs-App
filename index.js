@@ -1,1 +1,2 @@
 console.log("Welcome to the Sample Hello World Nodejs Application !");
+console.log("Thank you !");
