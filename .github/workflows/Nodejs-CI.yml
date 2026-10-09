@@ -37,10 +37,9 @@ jobs:
 
     - name: Install Node.js dependencies
       run: npm ci # Step 3: Perform a clean install of Node.js dependencies.
-
-    - name: Run tests
-      run: npm test # Step 4: Run tests using the specified Node.js version.
       
-        cache: 'npm'
-    - run: npm run build --if-present
-    - run: npm test
+    - name: Run tests
+      run: npm run test # Step 4: Run tests using the specified Node.js version.
+
+    - name: build
+      run: npm run build --if-present
