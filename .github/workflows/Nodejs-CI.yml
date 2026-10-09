@@ -22,18 +22,18 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]  # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    #strategy:
+      #matrix:
+        #node-version: [18.x, 20.x, 22.x]  # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4  # Step 1: Check out the source code from the repository.
 
-    - name: Setup Node.js ${{ matrix.node-version }}
+    - name: Set up Node.js  
       uses: actions/setup-node@v4 # Step 2: Set up the specified version of Node.js for testing.
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 24
 
     - name: Install Node.js dependencies
       run: npm ci # Step 3: Perform a clean install of Node.js dependencies.
