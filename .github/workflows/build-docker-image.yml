@@ -44,8 +44,8 @@ jobs:
         run: |
           kubectl rollout status deployment/nodejs-app-deployment
           kubectl get pods
-          kubectl get svc  
-        #  minikube service list
+          kubectl get svc 
+          minikube service list
         #  minikube service local-nodejs-app-svc --url
         #  echo "------------------opening the service------------------"
         #  curl $(minikube service local-nodejs-app-svc --url)
