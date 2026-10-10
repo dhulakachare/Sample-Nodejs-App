@@ -21,7 +21,7 @@ jobs:
   Test:
     runs-on: ubuntu-24.04
     env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true
+      'FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true'
 
     #strategy:
       #matrix:
@@ -46,7 +46,7 @@ jobs:
     needs: Test 
     runs-on: ubuntu-24.04
     env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true
+      'FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true'
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4 
