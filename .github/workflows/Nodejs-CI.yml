@@ -46,7 +46,7 @@ jobs:
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4 
-      
+
     - name: Set up Node.js
       uses: actions/setup-node@v4 
       with:
@@ -69,3 +69,24 @@ jobs:
         path: |
           dist
           package.json
+        
+  Deploy:
+    needs: Build
+    runs-on: ubuntu-24.04
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4 
+
+    - name: Download Build Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-artifacts
+
+    - name: Output Contents
+      run:
+          ls
+
+    - name: Deploy to Server
+      run: echo "Deploying to server..."
