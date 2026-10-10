@@ -41,6 +41,7 @@ jobs:
       run: npm run test # Step 4: Run tests using the specified Node.js version.
 
   Build:
+    needs: Test 
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Code
