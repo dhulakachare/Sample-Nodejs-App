@@ -6,8 +6,7 @@ on:
 jobs:
   Deploy:
     runs-on: ubuntu-24.04
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+    timeout-minutes: 30
     name: build nodejs-app and deploy to minikube
 
     steps:
@@ -15,14 +14,16 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Start Minikube
-        uses: medyagh/setup-minikube@v0
+        uses: medyagh/setup-minikube@latest
         with:
           driver: docker
           cpus: 2
           memory: 4096
 
       - name: Verify cluster
-        run: kubectl get pods -A
+        run: |
+          kubectl get nodes
+          kubectl get pods -A
 
       - name: Build Docker image
         run: docker build -t dhulakachare/nodejs-app:latest .
@@ -36,9 +37,9 @@ jobs:
           kubectl rollout status deployment/nodejs-app-deployment --timeout=180s
           kubectl get pods -A
 
-      - name: Test service URLs
+      - name: Test the service URL
         run: |
           minikube service list
-          minikube service nodejs-app-service --url
-          echo "------------------opening the service------------------"
-          curl $(minikube service nodejs-app-service --url)
+          SERVICE_URL=$(minikube service nodejs-app-service --url)
+          echo "Service URL: $SERVICE_URL"
+          curl -fsS "$SERVICE_URL"
