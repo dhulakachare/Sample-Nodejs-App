@@ -9,10 +9,11 @@
 name: Node.js CI
 
 on:
-  push:
-    branches: [ "main" ]  # Trigger the workflow on every commit to the main branch.
-  pull_request:
-    branches: [ "main" ]  # Trigger the workflow on pull requests targeting the main branch.
+  workflow_dispatch: # Allows manual triggering of the workflow from the GitHub Actions tab.
+  #push:
+   # branches: [ "main" ]  # Trigger the workflow on every commit to the main branch.
+  #pull_request:
+  #  branches: [ "main" ]  # Trigger the workflow on pull requests targeting the main branch.
 
 jobs:
   Test:
