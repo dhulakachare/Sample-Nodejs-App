@@ -1,7 +1,4 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-# It performs the following steps:
-
+# This CICD workflow performs following actions:
 # Step 1: Check out the source code.
 # Step 2: Set up different versions of Node.js for testing.
 # Step 3: Perform a clean install of Node.js dependencies.
@@ -58,7 +55,7 @@ jobs:
       with:
         path: ~/.npm
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        
+
     - name: Set up Node.js
       uses: actions/setup-node@v4 
       with:
@@ -81,24 +78,46 @@ jobs:
         path: |
           dist
           package.json
+
+    - name: Download Build Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-artifacts
+    - name: Output Contents
+      run:
+          ls    
         
-  Deploy:
+  Build-Push-Docker-Image:
     needs: Build
     runs-on: ubuntu-24.04
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v4 
+      uses: actions/checkout@v4
 
-    - name: Download Build Artifacts
-      uses: actions/download-artifact@v4
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3
       with:
-        name: build-artifacts
-
-    - name: Output Contents
-      run:
-          ls
-
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+  
+    - name: Build and Push Docker Image
+      uses: docker/build-push-action@v6
+      with:
+        context: . # Looks for the Dockerfile in the root directory
+        file: ./Dockerfile
+        push: true
+          # Tags the image as 'latest' and with the unique GitHub commit SHA
+        tags: |
+          ${{ secrets.DOCKERHUB_USERNAME }}/node-app:latest
+          ${{ secrets.DOCKERHUB_USERNAME }}/node-app:${{ github.sha }}
+          # Enables GitHub Actions caching to speed up future builds
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        
     - name: Deploy to Server
       run: echo "Deploying to server..."
