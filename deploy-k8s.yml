@@ -16,7 +16,7 @@ spec:
         spec:
             containers:
                 - name: nodejs-app
-                  imagePullPolicy: Never
+                  imagePullPolicy: IfNotPresent
                   image: dhulakachare/nodejs-app:latest
                   resources:
                       limits:
