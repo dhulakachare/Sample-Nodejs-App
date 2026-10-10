@@ -26,6 +26,12 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4  # Step 1: Check out the source code from the repository.
 
+    - name: Cache Depenedencies
+      uses: actions/cache@v4 # Step 4: Cache and restore dependencies for faster builds.
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
     - name: Set up Node.js
       uses: actions/setup-node@v4 # Step 2: Set up the specified version of Node.js for testing.*/
       with:
@@ -46,7 +52,13 @@ jobs:
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4 
-
+    
+    - name: Cache Depenedencies
+      uses: actions/cache@v4 # Step 4: Cache and restore dependencies for faster builds.
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        
     - name: Set up Node.js
       uses: actions/setup-node@v4 
       with:
