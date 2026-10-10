@@ -31,10 +31,12 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4  # Step 1: Check out the source code from the repository.
 
-    - name: Set up Node.js  
-      uses: actions/setup-node@v4 # Step 2: Set up the specified version of Node.js for testing.
-      with:
-        node-version: 24
+    - name: Set up Node.js
+      runs:
+        using: node24  
+      # uses: actions/setup-node@v4 # Step 2: Set up the specified version of Node.js for testing.*/
+      #with:
+       # node-version: 24
         cache: 'npm' # Step 4: Cache and restore dependencies for faster builds.
 
     - name: Install Node.js dependencies
@@ -51,10 +53,12 @@ jobs:
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4 
-    - name: Set up Node.js  
-      uses: actions/setup-node@v4 
-      with:
-        node-version: 24
+    - name: Set up Node.js
+        runs:
+        using: node24  
+      #uses: actions/setup-node@v4 
+      #with:
+      #  node-version: 24
         cache: 'npm'
 
     - name: Install Node.js dependencies
