@@ -6,7 +6,7 @@
 # Step 5: Build the source code.
 # Step 6: Run tests using different versions of Node.js.
 
-name: Node.js CI
+name: Node.js CI-CD Pipeline
 
 on:
   workflow_dispatch: # Allows manual triggering of the workflow from the GitHub Actions tab.
