@@ -1,0 +1,130 @@
+# This CICD workflow performs following actions:
+# Step 1: Check out the source code.
+# Step 2: Set up different versions of Node.js for testing.
+# Step 3: Perform a clean install of Node.js dependencies.
+# Step 4: Cache and restore dependencies for faster builds.
+# Step 5: Build the source code.
+# Step 6: Run tests using different versions of Node.js.
+
+name: Node.js CI
+
+on:
+  workflow_dispatch: # Allows manual triggering of the workflow from the GitHub Actions tab.
+  #push:
+   # branches: [ "main" ]  # Trigger the workflow on every commit to the main branch.
+  #pull_request:
+  #  branches: [ "main" ]  # Trigger the workflow on pull requests targeting the main branch.
+
+jobs:
+  Test:
+    runs-on: ubuntu-24.04
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4  # Step 1: Check out the source code from the repository.
+
+    - name: Cache Depenedencies
+      uses: actions/cache@v4 # Step 4: Cache and restore dependencies for faster builds.
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4 # Step 2: Set up the specified version of Node.js for testing.*/
+      with:
+        node-version: 24
+        cache: 'npm' # Step 4: Cache and restore dependencies for faster builds.
+
+    - name: Install Node.js dependencies
+      run: npm ci # Step 3: Perform a clean install of Node.js dependencies.
+
+    - name: Run tests
+      run: npm run test # Step 4: Run tests using the specified Node.js version.
+
+  Build:
+    needs: Test 
+    runs-on: ubuntu-24.04
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4 
+    
+    - name: Cache Depenedencies
+      uses: actions/cache@v4 # Step 4: Cache and restore dependencies for faster builds.
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4 
+      with:
+        node-version: 24
+        cache: 'npm'
+
+    - name: Install Node.js dependencies
+      run: npm ci
+
+    - name: Run tests
+      run: npm run test
+
+    - name: Build Website
+      run: npm run build
+
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifacts
+        path: |
+          dist
+          package.json
+
+    - name: Download Build Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-artifacts
+    - name: Output Contents
+      run:
+          ls    
+        
+  Deploy:
+    needs: Build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    name: Build nodejs-app and deploy to minikube
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Start Minikube
+        uses: medyagh/setup-minikube@latest
+        with:
+          driver: docker
+          cpus: 2
+          memory: 4096
+
+      - name: Verify cluster
+        run: |
+          kubectl get nodes
+          kubectl get pods -A
+
+      - name: Build Docker image
+        run: docker build -t dhulakachare/nodejs-app:latest .
+
+      - name: Load image into Minikube
+        run: minikube image load dhulakachare/nodejs-app:latest
+
+      - name: Deploy to Minikube
+        run: |
+          kubectl apply -f deploy-k8s.yml
+          kubectl rollout status deployment/nodejs-app-deployment --timeout=180s
+          kubectl get pods -A
+
+      - name: Test the service URL
+        run: |
+          minikube service list
+          SERVICE_URL=$(minikube service nodejs-app-service --url)
+          echo "Service URL: $SERVICE_URL"
+          curl -fsS "$SERVICE_URL"
