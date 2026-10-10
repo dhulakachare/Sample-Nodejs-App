@@ -18,8 +18,7 @@ on:
     branches: [ "main" ]  # Trigger the workflow on pull requests targeting the main branch.
 
 jobs:
-  build:
-
+  Test:
     runs-on: ubuntu-latest
 
     #strategy:
@@ -41,5 +40,29 @@ jobs:
     - name: Run tests
       run: npm run test # Step 4: Run tests using the specified Node.js version.
 
-    - name: build
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4 
+    - name: Set up Node.js  
+      uses: actions/setup-node@v4 
+      with:
+        node-version: 24
+
+    - name: Install Node.js dependencies
+      run: npm ci
+
+    - name: Run tests
+      run: npm run test
+
+    - name: Build Website
       run: npm run build
+
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifacts
+        path: |
+          dist
+          package.json
