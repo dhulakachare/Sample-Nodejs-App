@@ -11,8 +11,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          repository: medyagh/local-dev-example-with-minikube
 
       - name: Start minikube
         uses: medyagh/setup-minikube@latest
@@ -22,16 +20,16 @@ jobs:
 
       - name: Build image
         run: |
-          minikube image build -t local/nodejs-app:v1 .
+          minikube image build -t dhulakachare/nodejs-app:latest .
 
       - name: Deploy to minikube
         run: |
           kubectl apply -f deploy-k8s.yml
-          kubectl wait --for=condition=ready pod -l app=local/nodejs-app
+          kubectl wait --for=condition=available deployment/nodejs-app-deployment --timeout=120s
 
       - name: Test service URLs
         run: |
           minikube service list
-          minikube service local-nodejs-app-svc --url
+          minikube service nodejs-app-service --url
           echo "------------------opening the service------------------"
-          curl $(minikube service local-nodejs-app-svc --url)
+          curl $(minikube service nodejs-app-service --url)

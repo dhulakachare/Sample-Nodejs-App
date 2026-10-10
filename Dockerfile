@@ -13,4 +13,4 @@ COPY . .
 EXPOSE 3000
 
 # 6. Run app
-CMD [ "node", "start" ]
+CMD [ "node", "index.js" ]
