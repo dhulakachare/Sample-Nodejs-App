@@ -38,6 +38,7 @@ jobs:
         run: |
           kubectl apply -f deploy-k8s.yml
           kubectl wait --for=condition=ready pod -l app=nodejs-app
+          kubectl get pods -l app=nodejs-app
 
       - name: Test service URLs
         run: |
