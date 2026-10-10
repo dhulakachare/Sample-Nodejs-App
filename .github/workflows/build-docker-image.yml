@@ -1,4 +1,4 @@
-name: Build and Publish Docker Image
+name: Build-n-Deploy-DockerImage-to-Minikube
 
 on:
   workflow_dispatch: 
@@ -37,8 +37,10 @@ jobs:
           kubectl get nodes
           kubectl get pods -A
 
-      - name: Load image into Minikube
-        run: minikube image load ${{ secrets.DOCKERHUB_USERNAME }}//nodejs-app:latest
+      - name: Pull image into Minikube
+        run: |
+          eval $(minikube docker-env)
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/nodejs-app:latest
 
       - name: Deploy to minikube
         run: |
