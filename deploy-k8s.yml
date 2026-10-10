@@ -1,7 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: nodejs-app
+    name: nodejs-app-deployment
+    labels:
+        app: nodejs-app
 spec:
     selector:
         matchLabels:
@@ -13,9 +15,9 @@ spec:
                 app: nodejs-app
         spec:
             containers:
-                - name: nodejs-app-api
+                - name: nodejs-app
                   imagePullPolicy: Never
-                  image: local/nodejs-app:latest
+                  image: dhulakachare/nodejs-app:latest
                   resources:
                       limits:
                           cpu: 50m
@@ -24,16 +26,16 @@ spec:
                           cpu: 25m
                           memory: 10Mi
                   ports:
-                      - containerPort: 8080
+                      - containerPort: 3000
 ---
 apiVersion: v1
 kind: Service
 metadata:
-    name: nodejs-app
+    name: nodejs-app-service
 spec:
     type: NodePort
     selector:
         app: nodejs-app
     ports:
-        - port: 8080
-          targetPort: 8080
+        - port: 3000
+          targetPort: 3000

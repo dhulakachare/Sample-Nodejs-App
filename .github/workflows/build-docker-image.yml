@@ -25,7 +25,27 @@ jobs:
         run: |  
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/nodejs-app:latest
   
-  
+      - name: Start Minikube
+        uses: medyagh/setup-minikube@latest
+
+      - name: Verify cluster!
+        run: |
+          kubectl get nodes
+          kubectl cluster-info
+          kubectl get pods -A
+
+      - name: Deploy to minikube
+        run: |
+          kubectl apply -f deploy-k8s.yaml
+          kubectl wait --for=condition=ready pod -l app=local/nodejs-app
+
+      - name: Test service URLs
+        run: |
+          minikube service list
+          minikube service local-nodejs-app-svc --url
+          echo "------------------opening the service------------------"
+          curl $(minikube service local-nodejs-app-svc --url)
+
 
 
 
