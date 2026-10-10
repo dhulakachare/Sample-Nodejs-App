@@ -92,7 +92,7 @@ jobs:
     needs: Build
     runs-on: ubuntu-24.04
     timeout-minutes: 30
-    name: Build nodejs-app and deploy to minikube
+    # name: Build nodejs-app and deploy to minikube
 
     steps:
       - name: Checkout code
