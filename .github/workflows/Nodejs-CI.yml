@@ -1,19 +1,12 @@
-# This CICD workflow performs following actions:
-# Step 1: Check out the source code.
-# Step 2: Set up different versions of Node.js for testing.
-# Step 3: Perform a clean install of Node.js dependencies.
-# Step 4: Cache and restore dependencies for faster builds.
-# Step 5: Build the source code.
-# Step 6: Run tests using different versions of Node.js.
 
 name: Node.js CI
 
 on:
-  workflow_dispatch: # Allows manual triggering of the workflow from the GitHub Actions tab.
+  workflow_dispatch: 
   #push:
-   # branches: [ "main" ]  # Trigger the workflow on every commit to the main branch.
+   # branches: [ "main" ]  
   #pull_request:
-  #  branches: [ "main" ]  # Trigger the workflow on pull requests targeting the main branch.
+  #  branches: [ "main" ]  
 
 jobs:
   Test:
