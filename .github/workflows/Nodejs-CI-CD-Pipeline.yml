@@ -22,16 +22,16 @@ jobs:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v4.2.2  # Step 1: Check out the source code from the repository.
+      uses: actions/checkout@v4.2.5  # Step 1: Check out the source code from the repository.
 
     - name: Cache Depenedencies
-      uses: actions/cache@v4 # Step 4: Cache and restore dependencies for faster builds.
+      uses: actions/cache@v4.2.0 # Step 4: Cache and restore dependencies for faster builds.
       with:
         path: ~/.npm
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
     - name: Set up Node.js
-      uses: actions/setup-node@v4 # Step 2: Set up the specified version of Node.js for testing.*/
+      uses: actions/setup-node@v4.2.0 # Step 2: Set up the specified version of Node.js for testing.*/
       with:
         node-version: 24
         cache: 'npm' # Step 4: Cache and restore dependencies for faster builds.
@@ -49,7 +49,7 @@ jobs:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v4.2.2 
+      uses: actions/checkout@v4.2.5 
     
     - name: Cache Depenedencies
       uses: actions/cache@v4 # Step 4: Cache and restore dependencies for faster builds.
@@ -58,7 +58,7 @@ jobs:
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
     - name: Set up Node.js
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v4.2.0
       with:
         node-version: 24
         cache: 'npm'
@@ -78,7 +78,7 @@ jobs:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v4.2.5
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
@@ -105,7 +105,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v4.2.5
 
       - name: Build Docker Image
         run: docker build . --file Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/nodejs-app:latest
@@ -126,7 +126,7 @@ jobs:
     timeout-minutes: 30 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v4.2.5
 
       - name: Start Minikube
         uses: medyagh/setup-minikube@latest
