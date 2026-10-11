@@ -157,7 +157,6 @@ jobs:
           SERVICE_URL=$(minikube service nodejs-app-service --url)
           echo "Service URL: $SERVICE_URL"
           curl -fsS "$SERVICE_URL"
-          
 
 
 
