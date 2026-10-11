@@ -4,8 +4,7 @@ const app = express();
 const PORT = 3000;
 
 app.get('/', (req, res) => {
-  res.send('Hello..Welcome to Nodejs Applicationn !!');
-  res.send('This Node.js is a containerized application running inside Minikube !!');
+  res.send('Hello World, Welcome to Nodejs Applicationn !!\n\nThis is a containerized application running inside Minikube !!\n');  
 });
 
 app.listen(PORT, () => {
