@@ -154,7 +154,6 @@ jobs:
       - name: Test Service URLs
         run: |
           minikube service list
-          minikube start --ports=127.0.0.1:30080:30080
           SERVICE_URL=$(minikube service nodejs-app-service --url)
           echo "Service URL: $SERVICE_URL"
           curl -fsS "$SERVICE_URL"
