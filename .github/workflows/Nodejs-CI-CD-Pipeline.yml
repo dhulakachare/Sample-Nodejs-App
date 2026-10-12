@@ -67,9 +67,7 @@ jobs:
 
     - name: Run tests
       run: npm run test
-
     
-
   Upload_Artifacts:
     needs: Test
     runs-on: ubuntu-24.04
