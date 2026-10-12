@@ -1,9 +1,9 @@
 # This CICD workflow performs following actions:
 # Job1: Build the Node.js application
-# Job2: Run tests.
-# Job3: Upload build artifacts to GitHub Actions.
-# Job4: Build Docker image and push to DockerHub.
-# Job5: Deploy the application to Minikube and test the service URL.
+# Job2: Run tests
+# Job3: Upload build artifacts to GitHub Actions
+# Job4: Build Docker image and push to DockerHub
+# Job5: Deploy the application to Minikube and test the service URL
 
 name: Node.js CI-CD Pipeline
 
@@ -154,6 +154,7 @@ jobs:
           SERVICE_URL=$(minikube service nodejs-app-service --url)
           echo "Service URL: $SERVICE_URL"
           curl -fsS "$SERVICE_URL"
+          minikube service --port-forward nodejs-app-service 30080:3000
 
 
 
