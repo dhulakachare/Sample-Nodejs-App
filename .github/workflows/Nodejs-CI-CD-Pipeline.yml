@@ -8,9 +8,9 @@
 name: Node.js CI-CD Pipeline
 
 on:
-  # workflow_dispatch: 
-  push:
-    branches: [ "main" ]
+  workflow_dispatch: 
+  # push:
+   # branches: [ "main" ]
   #pull_request:
   #  branches: [ "main" ] 
 
@@ -110,9 +110,7 @@ jobs:
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} 
         
   Docker_Build:
-    needs:
-      - Upload_Artifacts
-      - Sonarqube_Scan
+    needs: [Upload_Artifacts, Sonarqube_Scan]
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     # name: Build nodejs-app and deploy to minikube
