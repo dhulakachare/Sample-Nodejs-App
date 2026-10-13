@@ -147,7 +147,7 @@ jobs:
           kubectl apply -f deploy-k8s.yml
           kubectl rollout status deployment/nodejs-app-deployment --timeout=180s
           kubectl get pods -A
-          kubectl port-forward nodejs-app 30080:3000
+          # kubectl port-forward nodejs-app 30080:3000
 
       - name: Test Service URLs
         run: |
