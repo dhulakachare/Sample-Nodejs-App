@@ -145,6 +145,7 @@ jobs:
       - name: Deploy to Minikube
         run: |
           kubectl apply -f deploy-k8s.yml
+          kubectl expose deployment nodejs-app-deployment --type=NodePort --port=30080
           kubectl rollout status deployment/nodejs-app-deployment --timeout=180s
           kubectl get pods -A
 
