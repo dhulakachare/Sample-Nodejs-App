@@ -104,7 +104,7 @@ jobs:
         # Disabling shallow clone is recommended for improving relevancy of reporting
         fetch-depth: 0
     - name: SonarQube Scan
-      uses: sonarsource/sonarqube-scan-action@master
+      uses: sonarsource/sonarqube-scan-action@d209202bc7d53ff1cc128f7f907dac145c9d6ae9
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} 
@@ -123,7 +123,7 @@ jobs:
         run: docker build . --file Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/nodejs-app:latest
 
       - name: Log in to Docker Hub
-        uses: docker/login-action@v4
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -141,7 +141,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Start Minikube
-        uses: medyagh/setup-minikube@latest
+        uses: medyagh/setup-minikube@e9e035a86bbc3caea26a450bd4dbf9d0c453682e
         with:
           driver: docker
           cpus: 2
