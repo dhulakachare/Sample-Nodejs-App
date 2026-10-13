@@ -110,7 +110,9 @@ jobs:
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} 
         
   Docker_Build:
-    needs: Upload_Artifacts
+    needs:
+      - Upload_Artifacts
+      - Sonarqube_Scan
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     # name: Build nodejs-app and deploy to minikube
