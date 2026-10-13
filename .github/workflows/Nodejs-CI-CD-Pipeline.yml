@@ -95,6 +95,7 @@ jobs:
           ls
           
   Sonarqube_Scan:
+    needs: Upload_Artifacts
     runs-on: ubuntu-latest
     
     steps:
