@@ -8,8 +8,8 @@
 name: Node.js CI-CD Pipeline
 
 on:
-  #workflow_dispatch: 
-  push:
+  workflow_dispatch: 
+  #  push:
    # branches: [ "main" ]
   #pull_request:
   #  branches: [ "main" ] 
@@ -95,7 +95,7 @@ jobs:
           ls
           
   Sonarqube_Scan:
-    needs: Upload_Artifacts
+    # needs: Upload_Artifacts
     runs-on: ubuntu-latest
     
     steps:
