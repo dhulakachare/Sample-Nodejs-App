@@ -28,7 +28,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          # minikube docker-env | Invoke-Expression
+          eval $(minikube docker-env)
           docker build -t dhulakachare/nodejs-app:latest .
 
       - name: Load image into Minikube
