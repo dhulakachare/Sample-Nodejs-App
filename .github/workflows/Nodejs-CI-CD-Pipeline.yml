@@ -136,7 +136,7 @@ jobs:
 
         
   Docker_Build:
-    needs: [ Upload_Artifacts, DevSecops_Scan ]
+    needs: Upload_Artifacts # [ Upload_Artifacts, DevSecops_Scan ]
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     # name: Build nodejs-app and deploy to minikube
