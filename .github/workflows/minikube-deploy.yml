@@ -27,16 +27,20 @@ jobs:
           kubectl get pods -A
 
       - name: Build Docker image
-        run: docker build -t dhulakachare/nodejs-app:latest .
+        run: |
+          minikube docker-env | Invoke-Expression
+          docker build -t dhulakachare/nodejs-app:latest .
 
       - name: Load image into Minikube
         run: minikube image load dhulakachare/nodejs-app:latest
 
       - name: Deploy to Minikube
         run: |
-          kubectl apply -f deployment.yml
+          kubectl apply -f deploy.yml
           kubectl rollout status deployment/nodejs-app-deployment --timeout=180s
           kubectl get pods -A
+          kubectl expose deployment node-app --type=NodePort --port=3000
+          minikube service node-app
 
       - name: Test the service URL
         run: |
