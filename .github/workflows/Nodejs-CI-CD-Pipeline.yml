@@ -133,6 +133,9 @@ jobs:
           network_mode: host
           cmd_options: '-a'
           # fail_action: false
+      - name: Test continue-on-error
+        continue-on-error: true
+        run: exit 1
 
         
   Docker_Build:
