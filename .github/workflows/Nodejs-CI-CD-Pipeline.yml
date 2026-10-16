@@ -94,20 +94,34 @@ jobs:
         run:
           ls
           
-  Sonarqube_Scan:
+  DevSecops_Scan:
     needs: Test
     runs-on: ubuntu-latest
-    
     steps:
-    - uses: actions/checkout@v2
-      with:
+      - uses: actions/checkout@v2
+        with:
         # Disabling shallow clone is recommended for improving relevancy of reporting
-        fetch-depth: 0
-    - name: SonarQube Scan
-      uses: sonarsource/sonarqube-scan-action@d209202bc7d53ff1cc128f7f907dac145c9d6ae9
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} 
+          fetch-depth: 0
+      - name: Run SonarQube SAST Scan
+        uses: sonarsource/sonarqube-scan-action@d209202bc7d53ff1cc128f7f907dac145c9d6ae9
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} 
+
+      - name: Run Snyk SCA Scan
+        uses: snyk/actions/node@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Run OWASP ZAP DAST Scan
+        uses: zaproxy/action-baseline@v0.13.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          target: 'http://localhost:3000'
+          rules_file_name: '.zap/rules.tsv'
+          fail_action: false
+
         
   Docker_Build:
     needs: [ Upload_Artifacts, Sonarqube_Scan ]
