@@ -1,3 +1,4 @@
+
 name: Minikube Deployment
 
 on:
@@ -33,7 +34,7 @@ jobs:
 
       - name: Deploy to Minikube
         run: |
-          kubectl apply -f deploy-k8s.yml
+          kubectl apply -f deployment.yml
           kubectl rollout status deployment/nodejs-app-deployment --timeout=180s
           kubectl get pods -A
 
