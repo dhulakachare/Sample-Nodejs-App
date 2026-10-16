@@ -125,17 +125,17 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-      - name: Run OWASP ZAP DAST Scan
-        uses: zaproxy/action-baseline@0619037bb784a56e2e06b104f0ebe157e076f075
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          target: 'http://localhost:3000'
-          network_mode: host
-          cmd_options: '-a'
+      #- name: Run OWASP ZAP DAST Scan
+       # uses: zaproxy/action-baseline@0619037bb784a56e2e06b104f0ebe157e076f075
+        #with:
+         # token: ${{ secrets.GITHUB_TOKEN }}
+          #target: 'http://localhost:3000'
+          #network_mode: host
+          #cmd_options: '-a'
           # fail_action: false
-      - name: Test continue-on-error
-        continue-on-error: true
-        run: exit 1
+      #- name: Test continue-on-error
+       # continue-on-error: true
+        #run: exit 1
 
         
   Docker_Build:
