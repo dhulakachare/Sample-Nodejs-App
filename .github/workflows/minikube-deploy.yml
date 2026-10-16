@@ -40,11 +40,11 @@ jobs:
           kubectl rollout status deployment/node-app --timeout=180s
           kubectl get pods -A
           kubectl expose deployment node-app --type=NodePort --port=3000
-          minikube service node-app
+          # minikube service node-app
 
       - name: Test the service URL
         run: |
           minikube service list
-          SERVICE_URL=$(minikube service nodejs-app-service --url)
+          SERVICE_URL=$(minikube service node-app --url)
           echo "Service URL: $SERVICE_URL"
           curl -fsS "$SERVICE_URL"
